@@ -703,7 +703,7 @@
       
       clearTimeout(mouseTimeout);
       mouseTimeout = setTimeout(() => {
-        if (e.clientY > var(--navbar-height)) {
+        if (e.clientY > 50) {
           navbar.classList.remove('visible');
         }
       }, 2000);

@@ -33,58 +33,6 @@
       position: relative;
     }
 
-    /* Intense lightning effect */
-    #lightning {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: radial-gradient(circle at center, rgba(255, 255, 255, 0.8) 0%, rgba(255, 0, 51, 0.4) 50%, transparent 100%);
-      opacity: 0;
-      pointer-events: none;
-      z-index: 9999;
-      animation: extremeLightning 7s infinite;
-      mix-blend-mode: screen;
-    }
-
-    @keyframes extremeLightning {
-      0%, 100% { opacity: 0; }
-      1.5% { opacity: 0.95; }
-      2% { opacity: 0; }
-      2.5% { opacity: 0.88; }
-      3% { opacity: 0; }
-      3.2% { opacity: 0.92; }
-      3.5% { opacity: 0; }
-      7% { opacity: 0.75; }
-      7.3% { opacity: 0.9; }
-      7.6% { opacity: 0; }
-    }
-
-    /* Glitch effect overlay */
-    #glitch {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: repeating-linear-gradient(
-        0deg,
-        rgba(255, 0, 51, 0.05) 0px,
-        transparent 1px,
-        transparent 2px,
-        rgba(255, 0, 51, 0.05) 2px
-      );
-      pointer-events: none;
-      z-index: 9998;
-      animation: glitchMove 6s linear infinite;
-      opacity: 0.4;
-    }
-
-    @keyframes glitchMove {
-      0% { transform: translateY(0); }
-      100% { transform: translateY(100%); }
-    }
 
     /* Compact navbar */
     .navbar {
@@ -382,8 +330,7 @@
   </style>
 </head>
 <body>
-  <div id="lightning"></div>
-  <div id="glitch"></div>
+
 
   <!-- Loading screen -->
   <div class="loading-screen" id="loadingScreen">
@@ -615,10 +562,10 @@
     // Button event listeners
     backBtn.addEventListener('click', () => {
       if (antiCloseEnabled) {
-        const leave = confirm('Anti-close is enabled. Return to library? Progress may be lost.');
+        const leave = confirm('Anti-close is enabled btw. Are you sure you wanna return to library? Progress may be lost.');
         if (!leave) return;
       } else {
-        const leave = confirm('Return to library? Progress may be lost.');
+        const leave = confirm('Are you sure you wanna return to library? Progress may be lost.');
         if (!leave) return;
       }
       window.location.href = 'index.html';

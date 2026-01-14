@@ -6,19 +6,59 @@
   <link href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EYEDOPE</title>
+  <title>EYEDOPE V2</title>
   <link href="https://fonts.googleapis.com/css2?family=Rubik+Glitch&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
-      --red: #ff0033;
-      --red-bright: #ff1a4d;
-      --red-dark: #cc0029;
-      --red-glow: rgba(255, 0, 51, 0.6);
-      --black: #000000;
-      --dark-red: #1a0005;
+      /* Red Theme (Default) */
+      --primary: #ff0033;
+      --primary-bright: #ff1a4d;
+      --primary-dark: #cc0029;
+      --primary-glow: rgba(255, 0, 51, 0.6);
+      --bg-primary: #000000;
+      --bg-secondary: #0d0003;
+      --bg-tertiary: #1a0005;
       --glass: rgba(10, 0, 5, 0.75);
       --glass-border: rgba(255, 0, 51, 0.3);
       --glass-light: rgba(255, 255, 255, 0.05);
+      --text-primary: #ff0033;
+      --text-secondary: rgba(255, 0, 51, 0.8);
+      --text-muted: rgba(255, 0, 51, 0.5);
+      --shadow-color: rgba(255, 0, 51, 0.3);
+    }
+
+    [data-theme="light"] {
+      --primary: #0066ff;
+      --primary-bright: #3385ff;
+      --primary-dark: #0052cc;
+      --primary-glow: rgba(0, 102, 255, 0.4);
+      --bg-primary: #f8f9fa;
+      --bg-secondary: #e9ecef;
+      --bg-tertiary: #dee2e6;
+      --glass: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(0, 102, 255, 0.3);
+      --glass-light: rgba(0, 0, 0, 0.05);
+      --text-primary: #0066ff;
+      --text-secondary: rgba(0, 102, 255, 0.8);
+      --text-muted: rgba(0, 0, 0, 0.5);
+      --shadow-color: rgba(0, 102, 255, 0.2);
+    }
+
+    [data-theme="purple"] {
+      --primary: #9d4edd;
+      --primary-bright: #b266e3;
+      --primary-dark: #7c3db8;
+      --primary-glow: rgba(157, 78, 221, 0.6);
+      --bg-primary: #0a0a0a;
+      --bg-secondary: #1a0f2e;
+      --bg-tertiary: #2a1f3e;
+      --glass: rgba(26, 15, 46, 0.75);
+      --glass-border: rgba(157, 78, 221, 0.3);
+      --glass-light: rgba(255, 255, 255, 0.05);
+      --text-primary: #9d4edd;
+      --text-secondary: rgba(157, 78, 221, 0.8);
+      --text-muted: rgba(157, 78, 221, 0.5);
+      --shadow-color: rgba(157, 78, 221, 0.3);
     }
 
     * {
@@ -27,14 +67,19 @@
       box-sizing: border-box;
     }
 
+    html {
+      scroll-behavior: smooth;
+    }
+
     body {
-      background: linear-gradient(135deg, #000000 0%, #0d0003 50%, #1a0005 100%);
-      color: var(--red);
+      background: linear-gradient(135deg, var(--bg-primary) 0%, var(--bg-secondary) 50%, var(--bg-tertiary) 100%);
+      color: var(--primary);
       font-family: 'Orbitron', sans-serif;
       overflow-x: hidden;
       min-height: 100vh;
       position: relative;
       cursor: crosshair;
+      transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
     /* Animated background grid */
@@ -46,12 +91,13 @@
       width: 100%;
       height: 100%;
       background-image: 
-        linear-gradient(rgba(255, 0, 51, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255, 0, 51, 0.03) 1px, transparent 1px);
+        linear-gradient(var(--primary-glow) 1px, transparent 1px),
+        linear-gradient(90deg, var(--primary-glow) 1px, transparent 1px);
       background-size: 50px 50px;
       animation: gridMove 20s linear infinite;
       pointer-events: none;
       z-index: 0;
+      transition: all 0.5s ease;
     }
 
     @keyframes gridMove {
@@ -66,7 +112,7 @@
       left: 0;
       width: 100%;
       height: 100%;
-      background: linear-gradient(45deg, #fff 0%, #ff0033 50%, #fff 100%);
+      background: linear-gradient(45deg, #fff 0%, var(--primary) 50%, #fff 100%);
       opacity: 0;
       pointer-events: none;
       z-index: 9999;
@@ -96,10 +142,10 @@
       height: 100%;
       background: repeating-linear-gradient(
         0deg,
-        rgba(255, 0, 51, 0.03) 0px,
+        var(--primary-glow) 0px,
         transparent 2px,
         transparent 4px,
-        rgba(255, 0, 51, 0.03) 4px
+        var(--primary-glow) 4px
       );
       pointer-events: none;
       z-index: 9998;
@@ -109,6 +155,39 @@
     @keyframes glitchScan {
       0%, 100% { transform: translateY(0); opacity: 0.5; }
       50% { transform: translateY(-100%); opacity: 0.3; }
+    }
+
+    /* ASCII Animation Container */
+    .ascii-container {
+      position: relative;
+      height: 120px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 2rem;
+      overflow: hidden;
+    }
+
+    .ascii-art {
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      line-height: 1;
+      white-space: pre;
+      text-align: center;
+      color: var(--primary);
+      text-shadow: 0 0 10px var(--primary-glow);
+      animation: asciiGlow 3s ease-in-out infinite;
+    }
+
+    @keyframes asciiGlow {
+      0%, 100% { 
+        text-shadow: 0 0 10px var(--primary-glow);
+        transform: scale(1);
+      }
+      50% { 
+        text-shadow: 0 0 20px var(--primary-glow), 0 0 30px var(--primary-glow);
+        transform: scale(1.02);
+      }
     }
 
     /* Container */
@@ -133,7 +212,7 @@
       font-weight: 900;
       letter-spacing: 0.5rem;
       text-transform: uppercase;
-      background: linear-gradient(45deg, var(--red) 0%, var(--red-bright) 50%, var(--red) 100%);
+      background: linear-gradient(45deg, var(--primary) 0%, var(--primary-bright) 50%, var(--primary) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -141,9 +220,10 @@
       display: inline-block;
       animation: logoGlitch 4s infinite, logoPulse 2s ease-in-out infinite;
       text-shadow: 
-        0 0 30px var(--red-glow),
-        0 0 60px var(--red-glow),
-        0 0 90px var(--red-glow);
+        0 0 30px var(--shadow-color),
+        0 0 60px var(--shadow-color),
+        0 0 90px var(--shadow-color);
+      transition: all 0.5s ease;
     }
 
     @keyframes logoGlitch {
@@ -166,12 +246,29 @@
       opacity: 0.8;
       text-transform: uppercase;
       animation: subtitleFlicker 3s infinite;
+      transition: all 0.5s ease;
     }
 
     @keyframes subtitleFlicker {
       0%, 100% { opacity: 0.8; }
       41%, 43%, 47% { opacity: 0.3; }
       45%, 49% { opacity: 0.9; }
+    }
+
+    /* Rotating Description */
+    .rotating-description {
+      font-size: 0.9rem;
+      letter-spacing: 0.2rem;
+      margin-top: 0.5rem;
+      opacity: 0.6;
+      text-transform: uppercase;
+      animation: descriptionRotate 0.5s ease-out;
+      min-height: 1.5rem;
+    }
+
+    @keyframes descriptionRotate {
+      0% { opacity: 0; transform: translateY(-10px); }
+      100% { opacity: 0.6; transform: translateY(0); }
     }
 
     /* Search bar */
@@ -188,7 +285,7 @@
       backdrop-filter: blur(20px);
       border: 2px solid var(--glass-border);
       border-radius: 16px;
-      color: var(--red);
+      color: var(--primary);
       font-family: 'Orbitron', sans-serif;
       font-size: 1rem;
       outline: none;
@@ -196,14 +293,18 @@
       box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
     }
 
+    [data-theme="light"] .search-bar {
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+    }
+
     .search-bar::placeholder {
-      color: rgba(255, 0, 51, 0.5);
+      color: var(--text-muted);
     }
 
     .search-bar:focus {
-      border-color: var(--red);
+      border-color: var(--primary);
       box-shadow: 
-        0 0 30px var(--red-glow),
+        0 0 30px var(--shadow-color),
         0 8px 32px rgba(0, 0, 0, 0.6);
       transform: translateY(-2px);
     }
@@ -241,7 +342,13 @@
       position: relative;
       box-shadow: 
         0 8px 32px rgba(0, 0, 0, 0.5),
-        inset 0 1px 0 rgba(255, 255, 255, 0.1);
+        inset 0 1px 0 var(--glass-light);
+    }
+
+    [data-theme="light"] .game-card {
+      box-shadow: 
+        0 8px 32px rgba(0, 0, 0, 0.1),
+        inset 0 1px 0 var(--glass-light);
     }
 
     .game-card::before {
@@ -264,11 +371,11 @@
 
     .game-card:hover {
       transform: translateY(-12px) scale(1.02);
-      border-color: var(--red);
+      border-color: var(--primary);
       box-shadow: 
-        0 0 40px var(--red-glow),
+        0 0 40px var(--shadow-color),
         0 16px 48px rgba(0, 0, 0, 0.7),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        inset 0 1px 0 var(--glass-light);
     }
 
     .game-card:active {
@@ -280,7 +387,7 @@
       height: 200px;
       overflow: hidden;
       position: relative;
-      background: linear-gradient(135deg, rgba(255, 0, 51, 0.1) 0%, rgba(0, 0, 0, 0.5) 100%);
+      background: linear-gradient(135deg, var(--primary-glow) 0%, rgba(0, 0, 0, 0.5) 100%);
     }
 
     .game-card img {
@@ -309,12 +416,13 @@
       text-transform: uppercase;
       letter-spacing: 0.1rem;
       margin-bottom: 0.5rem;
-      text-shadow: 0 0 15px var(--red-glow);
+      text-shadow: 0 0 15px var(--shadow-color);
       transition: all 0.3s ease;
+      color: var(--text-primary);
     }
 
     .game-card:hover h3 {
-      text-shadow: 0 0 25px var(--red-glow);
+      text-shadow: 0 0 25px var(--shadow-color);
       transform: scale(1.05);
     }
 
@@ -324,7 +432,7 @@
       opacity: 0;
       transform: translateY(-10px);
       transition: all 0.3s ease;
-      color: var(--red-bright);
+      color: var(--primary-bright);
       text-transform: uppercase;
       letter-spacing: 0.15rem;
     }
@@ -355,6 +463,324 @@
       letter-spacing: 0.1rem;
     }
 
+    /* Settings Panel */
+    .settings-toggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 50px;
+      height: 50px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--glass-border);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 1000;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px var(--shadow-color);
+    }
+
+    .settings-toggle:hover {
+      transform: rotate(90deg) scale(1.1);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--shadow-color);
+    }
+
+    .settings-panel {
+      position: fixed;
+      top: 0;
+      right: -400px;
+      width: 400px;
+      height: 100vh;
+      background: var(--glass);
+      backdrop-filter: blur(30px);
+      border-left: 2px solid var(--glass-border);
+      z-index: 999;
+      transition: right 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      overflow-y: auto;
+      padding: 2rem;
+    }
+
+    .settings-panel.active {
+      right: 0;
+    }
+
+    .settings-header {
+      font-size: 1.5rem;
+      font-weight: 700;
+      margin-bottom: 2rem;
+      text-align: center;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+      color: var(--text-primary);
+    }
+
+    .setting-group {
+      margin-bottom: 2rem;
+    }
+
+    .setting-label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      color: var(--text-secondary);
+    }
+
+    .setting-input {
+      width: 100%;
+      padding: 0.8rem;
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--glass-border);
+      border-radius: 8px;
+      color: var(--text-primary);
+      font-family: inherit;
+      transition: all 0.3s ease;
+    }
+
+    [data-theme="light"] .setting-input {
+      background: rgba(255, 255, 255, 0.8);
+      color: #000;
+    }
+
+    .setting-input:focus {
+      outline: none;
+      border-color: var(--primary);
+      box-shadow: 0 0 10px var(--shadow-color);
+    }
+
+    .theme-selector {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 0.5rem;
+      margin-top: 0.5rem;
+    }
+
+    .theme-option {
+      padding: 0.8rem;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      font-weight: 600;
+    }
+
+    .theme-option.red {
+      background: linear-gradient(135deg, #ff0033, #cc0029);
+      color: white;
+    }
+
+    .theme-option.light {
+      background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+      color: #0066ff;
+    }
+
+    .theme-option.purple {
+      background: linear-gradient(135deg, #9d4edd, #7c3db8);
+      color: white;
+    }
+
+    .theme-option.active {
+      border-color: var(--primary);
+      transform: scale(1.05);
+      box-shadow: 0 0 15px var(--shadow-color);
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 50px;
+      height: 24px;
+    }
+
+    .toggle-switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      transition: 0.4s;
+      border-radius: 24px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      bottom: 3px;
+      background-color: white;
+      transition: 0.4s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(26px);
+    }
+
+    /* Bookmark Button */
+    .bookmark-container {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 100;
+    }
+
+    .bookmark-button {
+      display: inline-block;
+      padding: 12px 24px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--glass-border);
+      border-radius: 25px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.9rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: move;
+      transition: all 0.3s ease;
+      box-shadow: 0 4px 20px var(--shadow-color);
+      animation: bookmarkFloat 3s ease-in-out infinite;
+    }
+
+    @keyframes bookmarkFloat {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-5px); }
+    }
+
+    .bookmark-button:hover {
+      transform: scale(1.05);
+      border-color: var(--primary);
+      box-shadow: 0 0 20px var(--shadow-color);
+    }
+
+    /* Popup Modal */
+    .popup-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(10px);
+      z-index: 10000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .popup-overlay.active {
+      display: flex;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    .popup-modal {
+      background: var(--glass);
+      backdrop-filter: blur(30px);
+      border: 2px solid var(--glass-border);
+      border-radius: 20px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+      animation: slideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    @keyframes slideUp {
+      from { 
+        opacity: 0;
+        transform: translateY(50px) scale(0.9);
+      }
+      to { 
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .popup-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1rem;
+      color: var(--text-primary);
+    }
+
+    .popup-description {
+      font-size: 1rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      color: var(--text-secondary);
+    }
+
+    .popup-checkbox {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      gap: 0.5rem;
+    }
+
+    .popup-checkbox input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+    }
+
+    .popup-checkbox label {
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+    }
+
+    .popup-button {
+      padding: 12px 32px;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 25px;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .popup-button:hover {
+      background: var(--primary-bright);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px var(--shadow-color);
+    }
+
     /* Responsive */
     @media (max-width: 768px) {
       .container {
@@ -378,6 +804,24 @@
       .subtitle {
         font-size: 1rem;
       }
+
+      .settings-panel {
+        width: 100%;
+        right: -100%;
+      }
+
+      .ascii-art {
+        font-size: 10px;
+      }
+
+      .ascii-container {
+        height: 80px;
+      }
+
+      .bookmark-button {
+        font-size: 0.8rem;
+        padding: 10px 20px;
+      }
     }
 
     /* Custom scrollbar */
@@ -386,20 +830,57 @@
     }
 
     ::-webkit-scrollbar-track {
-      background: var(--black);
+      background: var(--bg-primary);
       border-left: 1px solid var(--glass-border);
     }
 
     ::-webkit-scrollbar-thumb {
       background: var(--glass);
-      border: 2px solid var(--black);
+      border: 2px solid var(--bg-primary);
       border-radius: 6px;
       backdrop-filter: blur(10px);
     }
 
     ::-webkit-scrollbar-thumb:hover {
-      background: var(--red-dark);
-      box-shadow: 0 0 10px var(--red-glow);
+      background: var(--primary-dark);
+      box-shadow: 0 0 10px var(--shadow-color);
+    }
+
+    /* Anti-close cloak button */
+    .cloak-button {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      padding: 10px 20px;
+      background: var(--glass);
+      backdrop-filter: blur(20px);
+      border: 2px solid var(--glass-border);
+      border-radius: 20px;
+      color: var(--text-primary);
+      text-decoration: none;
+      font-weight: 600;
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      z-index: 100;
+      animation: cloakPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes cloakPulse {
+      0%, 100% { 
+        box-shadow: 0 0 10px var(--shadow-color);
+      }
+      50% { 
+        box-shadow: 0 0 20px var(--shadow-color), 0 0 30px var(--shadow-color);
+      }
+    }
+
+    .cloak-button:hover {
+      transform: scale(1.05);
+      border-color: var(--primary);
+      box-shadow: 0 0 25px var(--shadow-color);
     }
   </style>
 </head>
@@ -407,10 +888,93 @@
   <div id="lightning"></div>
   <div id="glitch-overlay"></div>
 
+  <!-- Settings Toggle -->
+  <div class="settings-toggle" onclick="toggleSettings()">
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M12 1v6m0 6v6m11-7h-6m-6 0H1m17-4a4 4 0 0 0-8 0m8 8a4 4 0 0 0-8 0"></path>
+    </svg>
+  </div>
+
+  <!-- Settings Panel -->
+  <div class="settings-panel" id="settingsPanel">
+    <div class="settings-header">Dope ass Settings</div>
+    
+    <div class="setting-group">
+      <label class="setting-label">Tab Title</label>
+      <input type="text" class="setting-input" id="tabTitleInput" placeholder="Enter your desired tab title" value="EYEDOPE">
+    </div>
+
+    <div class="setting-group">
+      <label class="setting-label">Favicon URL</label>
+      <input type="text" class="setting-input" id="faviconInput" placeholder="Enter favicon URL">
+    </div>
+
+    <div class="setting-group">
+      <label class="setting-label">Da Theme</label>
+      <div class="theme-selector">
+        <div class="theme-option red active" onclick="setTheme('red')">Red</div>
+        <div class="theme-option light" onclick="setTheme('light')">Light</div>
+        <div class="theme-option purple" onclick="setTheme('purple')">Purple</div>
+      </div>
+    </div>
+
+    <div class="setting-group">
+      <label class="setting-label">
+        <span style="display: flex; align-items: center; justify-content: space-between;">
+          Anti-Close Cloak
+          <label class="toggle-switch">
+            <input type="checkbox" id="cloakToggle" onchange="toggleCloak()">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </label>
+    </div>
+
+    <div class="setting-group">
+      <label class="setting-label">
+        <span style="display: flex; align-items: center; justify-content: space-between;">
+          Instant about:blank
+          <label class="toggle-switch">
+            <input type="checkbox" id="blankToggle" onchange="toggleBlank()">
+            <span class="slider"></span>
+          </label>
+        </span>
+      </label>
+    </div>
+
+    <div class="setting-group">
+      <label class="setting-label">
+        <span style="display: flex; align-items: center; justify-content: space-between;">
+          Show Popup on Load
+          <label class="toggle-switch">
+            <input type="checkbox" id="popupToggle" onchange="togglePopupSetting()" checked>
+            <span class="slider"></span>
+          </label>
+        </span>
+      </label>
+    </div>
+
+    <div class="setting-group">
+      <button class="popup-button" onclick="resetSettings()" style="width: 100%;">Reset Settings</button>
+    </div>
+  </div>
+
+  <!-- Anti-Close Cloak Button -->
+  <div class="cloak-button" onclick="toggleCloakWindow()" id="cloakButton" style="display: none;">
+    🛡️ CLOAK ACTIVE
+  </div>
+
+  <!-- ASCII Animation Container -->
+  <div class="ascii-container">
+    <div class="ascii-art" id="asciiArt"></div>
+  </div>
+
   <div class="container">
     <header>
-      <h1 class="logo">eyedope v1.2</h1>
-      <p class="subtitle">big things are coming to eyedope... .....</p>
+      <h1 class="logo" id="mainLogo">eyedope v2</h1>
+      <p class="subtitle">the best dope for your eyes</p>
+      <div class="rotating-description" id="rotatingDescription">eyedope on top</div>
     </header>
 
     <div class="search-container">
@@ -430,8 +994,32 @@
     </div>
 
     <footer>
-      <p>© EYEDOPE * REMEMBER TO ANTI-CLOSE WHEN IN A GAME!</p>
+      <p>© 2026 | EYEDOPE v2 * </p>
     </footer>
+  </div>
+
+  <!-- Bookmark Button -->
+  <div class="bookmark-container">
+    <a href="javascript:(function(){window.open('https://eyedope.space','_blank');})();" 
+       class="bookmark-button" 
+       title="EyeDope Backup Website URL (when .live is blocked)">
+      📑 DRAG TO BOOKMARKS TO SAVE BACKUP URL!
+    </a>
+  </div>
+
+  <!-- Popup Modal -->
+  <div class="popup-overlay" id="popupOverlay">
+    <div class="popup-modal">
+      <div class="popup-title" id="popupTitle">eyedope v2 may get blocked</div>
+      <div class="popup-description" id="popupDescription">
+       It's very possible that eyedope may be blocked soon following the future updates coming. We're looking to establish a proxy, way more games, and potentially some scripts. Our backup domain will be at EYEDOPE.SPACE if the bookmarklet doesn't work for you. Thanks for understanding, and convert there if this webpage gets blocked in the future.
+    </div>
+      <div class="popup-checkbox">
+        <input type="checkbox" id="dontShowAgain">
+        <label for="dontShowAgain">don't show this again</label>
+      </div>
+      <button class="popup-button" onclick="closePopup()">understood</button>
+    </div>
   </div>
 
   <script>
@@ -443,6 +1031,276 @@
 
     let allGames = [];
     let filteredGames = [];
+    let cloakWindow = null;
+
+    // ASCII Art Animations
+    const asciiFrames = [
+      `                                         
+                                              ▄▄▄▄  
+                      █▄                    ▄██████ 
+                      ██                    ▀█▄  ██ 
+ ▄█▀█▄ ██ ██ ▄█▀█▄ ▄████ ▄███▄ ████▄ ▄█▀█▄      ▄█▀ 
+ ██▄█▀ ██▄██ ██▄█▀ ██ ██ ██ ██ ██ ██ ██▄█▀    ▄█▀   
+▄▀█▄▄▄▄▄▀██▀▄▀█▄▄▄▄█▀███▄▀███▀▄████▀▄▀█▄▄▄  ██████▄ 
+         ██                    ██                   
+       ▀▀▀                     ▀                    
+      `,
+      `
+                     ▄▄                     ▄▄▄▄▄▄▄  
+                     ██                     ▀▀▀▀████ 
+▄█▀█▄ ██ ██ ▄█▀█▄ ▄████ ▄███▄ ████▄ ▄█▀█▄      ▄██▀  
+██▄█▀ ██▄██ ██▄█▀ ██ ██ ██ ██ ██ ██ ██▄█▀    ▄███▄▄▄ 
+▀█▄▄▄  ▀██▀ ▀█▄▄▄ ▀████ ▀███▀ ████▀ ▀█▄▄▄   ████████ 
+        ██                    ██                     
+      ▀▀▀                     ▀▀                     
+      `
+    ];
+
+    let asciiFrameIndex = 0;
+    let asciiInterval;
+
+    function initAsciiAnimation() {
+      const asciiElement = document.getElementById('asciiArt');
+      asciiInterval = setInterval(() => {
+        asciiElement.textContent = asciiFrames[asciiFrameIndex];
+        asciiFrameIndex = (asciiFrameIndex + 1) % asciiFrames.length;
+      }, 2000);
+      asciiElement.textContent = asciiFrames[0];
+    }
+
+    // Rotating descriptions
+    const descriptions = [
+      "play games! education is weird anyway.",
+      "eyedope.live & eyedope.space (soon)",
+      "if they talk behind ur back, then fart. - Sun Tzu, The Art of War",
+      "bla bla blaaaa blah blah blah nwiuefdhneiuwfnh",
+      "new games come every week!!! (usually every 2 days!)",
+      "its all ports!!!!!!!!! everything!!!",
+      "pssssssssssst.. liam made this. yes, that liam.",
+      "i hope i can make a functional prox soon for ts. "
+    ];
+
+    let descriptionIndex = Math.floor(Math.random() * descriptions.length);
+
+    function rotateDescription() {
+      const descElement = document.getElementById('rotatingDescription');
+      descriptionIndex = Math.floor(Math.random() * descriptions.length);
+      descElement.style.animation = 'none';
+      setTimeout(() => {
+        descElement.textContent = descriptions[descriptionIndex];
+        descElement.style.animation = 'descriptionRotate 0.5s ease-out';
+      }, 50);
+    }
+
+    // Settings Management
+    let settings = {
+      theme: 'red',
+      tabTitle: 'EYEDOPE',
+      favicon: '',
+      cloakEnabled: false,
+      blankEnabled: false,
+      showPopup: true
+    };
+
+    function loadSettings() {
+      const saved = localStorage.getItem('eyedope-settings');
+      if (saved) {
+        settings = { ...settings, ...JSON.parse(saved) };
+      }
+      applySettings();
+    }
+
+    function saveSettings() {
+      localStorage.setItem('eyedope-settings', JSON.stringify(settings));
+    }
+
+    function applySettings() {
+      // Apply theme
+      document.documentElement.setAttribute('data-theme', settings.theme);
+      
+      // Apply tab title
+      document.title = settings.tabTitle;
+      document.getElementById('tabTitleInput').value = settings.tabTitle;
+      
+      // Apply favicon
+      if (settings.favicon) {
+        let faviconLink = document.querySelector('link[rel*="icon"]');
+        if (!faviconLink) {
+          faviconLink = document.createElement('link');
+          faviconLink.rel = 'icon';
+          document.head.appendChild(faviconLink);
+        }
+        faviconLink.href = settings.favicon;
+      }
+      document.getElementById('faviconInput').value = settings.favicon;
+      
+      // Apply toggles
+      document.getElementById('cloakToggle').checked = settings.cloakEnabled;
+      document.getElementById('blankToggle').checked = settings.blankEnabled;
+      document.getElementById('popupToggle').checked = settings.showPopup;
+      
+      // Show/hide cloak button
+      document.getElementById('cloakButton').style.display = settings.cloakEnabled ? 'block' : 'none';
+      
+      // Update theme selector
+      document.querySelectorAll('.theme-option').forEach(opt => opt.classList.remove('active'));
+      document.querySelector(`.theme-option.${settings.theme}`).classList.add('active');
+    }
+
+    function toggleSettings() {
+      const panel = document.getElementById('settingsPanel');
+      panel.classList.toggle('active');
+    }
+
+    function setTheme(theme) {
+      settings.theme = theme;
+      applySettings();
+      saveSettings();
+    }
+
+    function toggleCloak() {
+      settings.cloakEnabled = document.getElementById('cloakToggle').checked;
+      applySettings();
+      saveSettings();
+    }
+
+    function toggleBlank() {
+      settings.blankEnabled = document.getElementById('blankToggle').checked;
+      settings.showPopup = false;
+      applySettings();
+      saveSettings();
+      
+      if (settings.blankEnabled) {
+        window.open('about:blank', '_blank').focus();
+      }
+    }
+
+    function togglePopupSetting() {
+      settings.showPopup = document.getElementById('popupToggle').checked;
+      saveSettings();
+    }
+
+    function resetSettings() {
+      if (confirm('Reset all settings to default?')) {
+        localStorage.removeItem('eyedope-settings');
+        localStorage.removeItem('eyedope-popup-disabled');
+        location.reload();
+      }
+    }
+
+    // Tab title and favicon inputs
+    document.getElementById('tabTitleInput').addEventListener('input', (e) => {
+      settings.tabTitle = e.target.value;
+      document.title = e.target.value;
+      saveSettings();
+    });
+
+    document.getElementById('faviconInput').addEventListener('input', (e) => {
+      settings.favicon = e.target.value;
+      let faviconLink = document.querySelector('link[rel*="icon"]');
+      if (!faviconLink) {
+        faviconLink = document.createElement('link');
+        faviconLink.rel = 'icon';
+        document.head.appendChild(faviconLink);
+      }
+      faviconLink.href = e.target.value;
+      saveSettings();
+    });
+
+    // Popup Management
+    function showPopup() {
+      const popupDisabled = localStorage.getItem('eyedope-popup-disabled');
+      if (!settings.showPopup || popupDisabled === 'true') return;
+      
+      // Random popup content
+      const popupContents = [
+        {
+          title: "EyeDope V2 May Get Blocked...",
+          description: "It's very possible that eyedope may be blocked soon following the future updates coming. We're looking to establish a proxy, way more games, and potentially some scripts. Our backup domain will be at EYEDOPE.SPACE if the bookmarklet doesn't work for you. Thanks for understanding, and convert there if this webpage gets blocked in the future."
+        }
+      ];
+      
+      const randomContent = popupContents[Math.floor(Math.random() * popupContents.length)];
+      document.getElementById('popupTitle').textContent = randomContent.title;
+      document.getElementById('popupDescription').textContent = randomContent.description;
+      
+      document.getElementById('popupOverlay').classList.add('active');
+    }
+
+    function closePopup() {
+      const dontShow = document.getElementById('dontShowAgain').checked;
+      if (dontShow) {
+        localStorage.setItem('eyedope-popup-disabled', 'true');
+      }
+      document.getElementById('popupOverlay').classList.remove('active');
+    }
+
+    // Anti-close cloaking
+    function toggleCloakWindow() {
+      if (cloakWindow && !cloakWindow.closed) {
+        cloakWindow.focus();
+        return;
+      }
+      
+      cloakWindow = window.open('about:blank', '_blank', 'width=800,height=600');
+      if (cloakWindow) {
+        const doc = cloakWindow.document;
+        doc.open();
+        doc.write(`
+          <!DOCTYPE html>
+          <html>
+          <head>
+            <title>Google Classroom</title>
+            <style>
+              body { 
+                margin: 0; 
+                padding: 20px; 
+                background: #000; 
+                color: #ff0033; 
+                font-family: monospace;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                height: 100vh;
+                text-align: center;
+              }
+              .cloak-info {
+                font-size: 18px;
+                line-height: 1.6;
+              }
+              .cloak-title {
+                font-size: 24px;
+                font-weight: bold;
+                margin-bottom: 20px;
+                text-shadow: 0 0 10px currentColor;
+              }
+            </style>
+          </head>
+          <body>
+            <div class="cloak-info">
+              <div class="cloak-title">🛡️ ANTI-CLOSE CLOAK ENABLED</div>
+              <p>This window is now protected from forcefull closure from extensions, and from accidental closure.</p>
+            </div>
+            <script>
+              window.onbeforeunload = function() {
+                return "Leave EYEDOPE? Your progress may be lost.";
+              };
+              document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') {
+                  e.preventDefault();
+                }
+              });
+            <\/script>
+          </body>
+          </html>
+        `);
+        doc.close();
+        
+        cloakWindow.onbeforeunload = function() {
+          return "Leave EYEDOPE? Your progress may be lost.";
+        };
+      }
+    }
 
     // Auto-discover games from files folder
     async function discoverGames() {
@@ -615,7 +1473,7 @@
       const win = window.open('about:blank', '_blank');
       
       if (!win) {
-        alert('⚠️ Pop-up blocked idiot! Please allow popups for about:blank game cloak functionality and to open the game!');
+        alert('⚠️ Pop-up blocked! Please allow popups for about:blank game cloak functionality and to open the game!');
         return;
       }
 
@@ -679,6 +1537,21 @@
     // Initialize
     async function init() {
       try {
+        // Load settings first
+        loadSettings();
+        
+        // Initialize ASCII animation
+        initAsciiAnimation();
+        
+        // Start rotating descriptions
+        setInterval(rotateDescription, 4000);
+        
+        // Show popup after a delay
+        setTimeout(() => {
+          showPopup();
+        }, 1000);
+        
+        // Load games
         allGames = await discoverGames();
         
         // Sort alphabetically
@@ -710,9 +1583,31 @@
         searchBar.blur();
         filteredGames = [...allGames];
         renderGames(filteredGames);
+        
+        // Close settings panel
+        document.getElementById('settingsPanel').classList.remove('active');
+      }
+      if (e.key === 's' && e.altKey) {
+        e.preventDefault();
+        toggleSettings();
       }
     });
+
+    // Close settings when clicking outside
+    document.addEventListener('click', (e) => {
+      const settingsPanel = document.getElementById('settingsPanel');
+      const settingsToggle = document.querySelector('.settings-toggle');
+      
+      if (!settingsPanel.contains(e.target) && !settingsToggle.contains(e.target)) {
+        settingsPanel.classList.remove('active');
+      }
+    });
+
+    // Prevent context menu on bookmark button (for drag functionality)
+    document.querySelector('.bookmark-button').addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+    });
   </script>
-  <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1223804"></script>
+<script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1223804"></script>
 </body>
 </html>

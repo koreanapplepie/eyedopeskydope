@@ -4,7 +4,7 @@
   <meta name="referrer" content="no-referrer-when-downgrade" />
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>EYEDOPE </title>
+  <title>EYEDOPE 2</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
   <style>
     :root {
@@ -16,7 +16,8 @@
       --glass: rgba(10, 0, 5, 0.85);
       --glass-border: rgba(255, 0, 51, 0.4);
       --glass-light: rgba(255, 255, 255, 0.08);
-      --navbar-height: 50px;
+      --navbar-height: 60px;
+      --transition-speed: 0.4s;
     }
 
     * {
@@ -34,8 +35,7 @@
       position: relative;
     }
 
-
-    /* Compact navbar */
+    /* Enhanced navbar with animated background */
     .navbar {
       position: fixed;
       top: 0;
@@ -45,15 +45,16 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 0 1rem;
+      padding: 0 1.5rem;
       z-index: 9997;
-      background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(0, 0, 0, 0.85) 100%);
-      backdrop-filter: blur(10px);
-      border-bottom: 1px solid var(--glass-border);
+      background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 0, 10, 0.85) 100%);
+      backdrop-filter: blur(15px) saturate(180%);
+      border-bottom: 2px solid var(--glass-border);
       opacity: 0;
       transform: translateY(-100%);
-      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
       pointer-events: none;
+      box-shadow: 0 5px 30px rgba(255, 0, 51, 0.3);
     }
 
     .navbar.visible {
@@ -65,67 +66,130 @@
     .navbar-section {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
     }
 
-    /* Compact button styling */
+    /* Enhanced button styling with group animations */
     .navbar-btn {
       background: rgba(15, 0, 5, 0.6);
       border: 1px solid var(--glass-border);
       color: var(--red);
       font-family: 'Orbitron', sans-serif;
-      font-weight: 600;
-      padding: 0.5rem 0.9rem;
-      border-radius: 8px;
+      font-weight: 700;
+      padding: 0.6rem 1.1rem;
+      border-radius: 10px;
       cursor: pointer;
-      font-size: 0.75rem;
-      transition: all 0.2s ease;
+      font-size: 0.8rem;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.5rem;
       text-transform: uppercase;
-      letter-spacing: 0.05rem;
+      letter-spacing: 0.08rem;
       white-space: nowrap;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* Animated hover glow effect */
+    .navbar-btn::before {
+      content: '';
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      background: radial-gradient(circle, var(--red-glow) 0%, transparent 70%);
+      transition: all 0.4s ease;
+      transform: translate(-50%, -50%);
+      pointer-events: none;
+      opacity: 0;
+    }
+
+    .navbar-btn:hover::before {
+      width: 100px;
+      height: 100px;
+      opacity: 1;
     }
 
     .navbar-btn:hover {
-      border-color: var(--red);
-      background: rgba(20, 0, 5, 0.8);
-      box-shadow: 0 0 15px var(--red-glow);
-      transform: translateY(-1px);
+      border-color: var(--red-bright);
+      background: rgba(25, 0, 10, 0.9);
+      transform: translateY(-2px) scale(1.05);
+      box-shadow: 0 0 25px var(--red-glow);
+      z-index: 2;
     }
 
     .navbar-btn:active {
-      transform: translateY(0);
+      transform: translateY(0) scale(0.98);
     }
 
     .navbar-btn.active {
-      background: rgba(255, 0, 51, 0.15);
-      border-color: var(--red);
-      box-shadow: 0 0 10px var(--red-glow);
+      background: linear-gradient(135deg, rgba(255, 0, 51, 0.25) 0%, rgba(200, 0, 40, 0.4) 100%);
+      border-color: var(--red-bright);
+      box-shadow: 0 0 20px var(--red-glow), inset 0 0 10px rgba(255, 0, 51, 0.3);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { box-shadow: 0 0 20px var(--red-glow), inset 0 0 10px rgba(255, 0, 51, 0.3); }
+      50% { box-shadow: 0 0 35px var(--red-glow), inset 0 0 15px rgba(255, 0, 51, 0.5); }
     }
 
     .btn-icon {
-      font-size: 1rem;
+      font-size: 1.1rem;
       font-weight: bold;
+      transition: transform 0.3s ease;
     }
 
-    /* Title in navbar */
+    .navbar-btn:hover .btn-icon {
+      transform: scale(1.2) rotate(5deg);
+    }
+
+    /* Enhanced title with cyberpunk effect */
     .navbar-title {
-      font-size: 0.9rem;
-      font-weight: 700;
-      text-shadow: 0 0 10px var(--red-glow);
-      letter-spacing: 0.1rem;
+      font-size: 1.2rem;
+      font-weight: 900;
+      text-shadow: 0 0 15px var(--red-glow), 0 0 30px var(--red-glow);
+      letter-spacing: 0.25rem;
       text-transform: uppercase;
-      animation: titlePulse 3s ease-in-out infinite;
+      animation: titleCyber 3s ease-in-out infinite;
+      position: relative;
+      padding: 0.5rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 12px;
     }
 
-    @keyframes titlePulse {
-      0%, 100% { text-shadow: 0 0 10px var(--red-glow); }
-      50% { text-shadow: 0 0 20px var(--red-glow), 0 0 30px var(--red-glow); }
+    .navbar-title::after {
+      content: 'EYEDOPE 2';
+      position: absolute;
+      top: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      color: var(--red-bright);
+      opacity: 0.7;
+      animation: titleGlitch 4s infinite;
+      pointer-events: none;
     }
 
-    /* Game container - accounting for navbar */
+    @keyframes titleCyber {
+      0%, 100% { 
+        text-shadow: 0 0 15px var(--red-glow), 0 0 30px var(--red-glow);
+        transform: scale(1);
+      }
+      50% { 
+        text-shadow: 0 0 25px var(--red-glow), 0 0 50px var(--red-glow), 0 0 75px var(--red-glow);
+        transform: scale(1.02);
+      }
+    }
+
+    @keyframes titleGlitch {
+      0%, 90%, 100% { opacity: 0; }
+      91%, 93% { opacity: 0.8; transform: translateX(-49%); }
+      92%, 94% { opacity: 0.6; transform: translateX(-51%); }
+    }
+
+    /* Game container */
     .game-container {
       position: absolute;
       top: var(--navbar-height);
@@ -133,6 +197,7 @@
       width: 100%;
       height: calc(100vh - var(--navbar-height));
       z-index: 1;
+      transition: all var(--transition-speed) ease;
     }
 
     .game-container.fullscreen {
@@ -149,7 +214,7 @@
       display: block;
     }
 
-    /* Loading screen */
+    /* Enhanced loading screen */
     .loading-screen {
       position: fixed;
       top: 0;
@@ -171,15 +236,12 @@
     }
 
     .loading-text {
-      font-size: 2.2rem;
-      font-weight: 700;
-      text-shadow: 
-        0 0 20px var(--red-glow),
-        0 0 40px var(--red-glow);
-      margin-bottom: 2.5rem;
+      font-size: 2.5rem;
+      font-weight: 900;
+      text-shadow: 0 0 30px var(--red-glow), 0 0 60px var(--red-glow);
+      margin-bottom: 3rem;
       animation: textFlicker 2s infinite;
-      letter-spacing: 0.2rem;
-      text-transform: uppercase;
+      letter-spacing: 0.3rem;
     }
 
     @keyframes textFlicker {
@@ -189,85 +251,17 @@
     }
 
     .loading-spinner {
-      width: 80px;
-      height: 80px;
-      border: 5px solid rgba(255, 0, 51, 0.2);
+      width: 100px;
+      height: 100px;
+      border: 6px solid rgba(255, 0, 51, 0.2);
       border-top-color: var(--red);
       border-radius: 50%;
       animation: spin 1s linear infinite;
-      box-shadow: 0 0 30px var(--red-glow);
+      box-shadow: 0 0 40px var(--red-glow);
     }
 
     @keyframes spin {
       to { transform: rotate(360deg); }
-    }
-
-    /* Error screen */
-    .error-screen {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: linear-gradient(135deg, #000 0%, #1a0005 100%);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      z-index: 100;
-      text-align: center;
-      padding: 2rem;
-    }
-
-    .error-title {
-      font-size: 3.5rem;
-      font-weight: 900;
-      text-shadow: 
-        0 0 40px var(--red-glow),
-        0 0 80px var(--red-glow);
-      margin-bottom: 1.5rem;
-      animation: errorGlitch 2s infinite;
-      letter-spacing: 0.3rem;
-    }
-
-    @keyframes errorGlitch {
-      0%, 90%, 100% { transform: translate(0, 0); }
-      91% { transform: translate(-5px, 3px); }
-      93% { transform: translate(4px, -3px); }
-      95% { transform: translate(-3px, 2px); }
-    }
-
-    .error-message {
-      font-size: 1.4rem;
-      opacity: 0.8;
-      margin-bottom: 2.5rem;
-      max-width: 600px;
-      line-height: 1.6;
-    }
-
-    .glass-btn {
-      background: var(--glass);
-      backdrop-filter: blur(20px) saturate(180%);
-      border: 2px solid var(--glass-border);
-      color: var(--red);
-      font-family: 'Orbitron', sans-serif;
-      font-weight: 700;
-      padding: 0.9rem 1.8rem;
-      border-radius: 14px;
-      cursor: pointer;
-      font-size: 0.95rem;
-      transition: all 0.3s ease;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-      text-transform: uppercase;
-      letter-spacing: 0.12rem;
-    }
-
-    .glass-btn:hover {
-      border-color: var(--red);
-      box-shadow: 0 0 30px var(--red-glow);
-      transform: translateY(-3px);
     }
 
     /* Notification toast */
@@ -277,15 +271,16 @@
       left: 50%;
       transform: translateX(-50%) translateY(150%);
       background: var(--glass);
-      backdrop-filter: blur(20px);
+      backdrop-filter: blur(20px) saturate(180%);
       border: 2px solid var(--glass-border);
-      padding: 0.8rem 1.5rem;
-      border-radius: 10px;
-      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+      padding: 1rem 2rem;
+      border-radius: 14px;
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.9);
       z-index: 9996;
-      font-size: 0.85rem;
-      transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-      letter-spacing: 0.05rem;
+      font-size: 0.9rem;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      letter-spacing: 0.08rem;
+      font-weight: 700;
     }
 
     .notification.show {
@@ -295,78 +290,85 @@
     /* Responsive design */
     @media (max-width: 768px) {
       :root {
-        --navbar-height: 45px;
+        --navbar-height: 50px;
       }
 
       .navbar {
-        padding: 0 0.5rem;
+        padding: 0 0.75rem;
       }
 
       .navbar-btn {
-        padding: 0.4rem 0.7rem;
-        font-size: 0.65rem;
+        padding: 0.5rem 0.8rem;
+        font-size: 0.7rem;
         gap: 0.3rem;
       }
 
       .navbar-title {
-        font-size: 0.75rem;
+        font-size: 0.9rem;
+        letter-spacing: 0.15rem;
       }
 
       .btn-icon {
-        font-size: 0.9rem;
+        font-size: 1rem;
       }
 
       .loading-text {
-        font-size: 1.5rem;
-      }
-
-      .error-title {
-        font-size: 2.5rem;
-      }
-
-      .error-message {
-        font-size: 1.1rem;
+        font-size: 1.8rem;
       }
     }
   </style>
 </head>
 <body>
 
-
   <!-- Loading screen -->
   <div class="loading-screen" id="loadingScreen">
-    <div class="loading-text">Entering the void...</div>
+    <div class="loading-text">Initializing EYEDOPE 2...</div>
     <div class="loading-spinner"></div>
   </div>
 
-  <!-- Compact navbar -->
+  <!-- Enhanced navbar -->
   <nav class="navbar" id="navbar">
     <div class="navbar-section">
-      <button class="navbar-btn" id="backBtn" title="Return to library">
+      <button class="navbar-btn" id="backBtn" title="Return to library (Ctrl+B)">
         <span class="btn-icon">←</span>
         <span>Library</span>
       </button>
       
-      <button class="navbar-btn" id="cloakBtn" title="Cloak in about:blank">
+      <button class="navbar-btn" id="cloakBtn" title="Cloak in about:blank (Ctrl+K)">
         <span class="btn-icon">🕶</span>
         <span>Cloak</span>
       </button>
 
-      <button class="navbar-btn" id="antiCloseBtn" title="Prevent accidental closing">
+      <button class="navbar-btn" id="cloneBtn" title="Clone this tab">
+        <span class="btn-icon">📋</span>
+        <span>Clone</span>
+      </button>
+
+      <button class="navbar-btn" id="hideBtn" title="Hide window (Panic)">
+        <span class="btn-icon">👁‍🗨</span>
+        <span>Hide</span>
+      </button>
+
+      <button class="navbar-btn" id="antiCloseBtn" title="Prevent accidental closing (Ctrl+Shift+L)">
         <span class="btn-icon">🔒</span>
         <span>Anti-Close</span>
       </button>
     </div>
     
-    <div class="navbar-title" id="gameTitle">Loading...</div>
+    <div class="navbar-title" id="gameTitle">EYEDOPE 2</div>
     
     <div class="navbar-section">
-      <button class="navbar-btn" id="reloadBtn" title="Reload game">
+      <button class="navbar-btn" id="settingsBtn" title="Settings">
+        <span class="btn-icon">⚙</span>
+        <span>Settings</span>
+      </button>
+
+      <button class="navbar-btn" id="reloadBtn" title="Reload game (Ctrl+R)">
         <span class="btn-icon">↻</span>
         <span>Reload</span>
       </button>
 
-      <button class="navbar-btn" id="fullscreenBtn" title="Toggle fullscreen">
+      <button class="navbar-btn" id="fullscreenBtn" title="Fullscreen (F11)">
         <span class="btn-icon">⛶</span>
         <span>Fullscreen</span>
       </button>
@@ -394,22 +396,27 @@
     const navbar = document.getElementById('navbar');
     const backBtn = document.getElementById('backBtn');
     const cloakBtn = document.getElementById('cloakBtn');
+    const cloneBtn = document.getElementById('cloneBtn');
+    const hideBtn = document.getElementById('hideBtn');
     const antiCloseBtn = document.getElementById('antiCloseBtn');
+    const settingsBtn = document.getElementById('settingsBtn');
     const reloadBtn = document.getElementById('reloadBtn');
     const fullscreenBtn = document.getElementById('fullscreenBtn');
     const notification = document.getElementById('notification');
 
-    // State
+    // State management
     let antiCloseEnabled = false;
     let isCloaked = window.location !== window.parent.location;
+    let isHidden = false;
 
-    // Show notification
-    function showNotification(message, duration = 3000) {
+    // Enhanced notification system
+    function showNotification(message, duration = 3500) {
       notification.textContent = message;
       notification.classList.add('show');
-      setTimeout(() => {
+      const timeout = setTimeout(() => {
         notification.classList.remove('show');
       }, duration);
+      return () => clearTimeout(timeout);
     }
 
     // About:blank cloaking
@@ -420,7 +427,7 @@
       }
 
       const currentUrl = window.location.href;
-      const newWindow = window.open('about:blank', '_blank');
+      const newWindow = window.open('about:blank', '_blank', 'noopener,noreferrer');
       
       if (newWindow) {
         newWindow.document.write(`
@@ -435,16 +442,18 @@
                 overflow: hidden;
                 width: 100%;
                 height: 100%;
+                background: #000;
               }
               iframe {
                 width: 100%;
                 height: 100%;
                 border: none;
+                background: #000;
               }
             </style>
           </head>
           <body>
-            <iframe src="${currentUrl}"></iframe>
+            <iframe src="${currentUrl}" referrerpolicy="no-referrer-when-downgrade"></iframe>
           </body>
           </html>
         `);
@@ -462,16 +471,57 @@
       }
     }
 
+    // Clone current tab
+    function cloneTab() {
+      const currentUrl = window.location.href;
+      const newTab = window.open(currentUrl, '_blank', 'noopener,noreferrer');
+      if (newTab) {
+        showNotification('Tab cloned successfully');
+      } else {
+        showNotification('Popup blocked! Unable to clone.');
+      }
+    }
+
+    // Hide/Show window functionality (panic mode)
+    function toggleHide() {
+      isHidden = !isHidden;
+      if (isHidden) {
+        // Minimize effect by shrinking and moving off-screen
+        document.body.style.transform = 'scale(0.1) translateY(-200vh)';
+        document.body.style.opacity = '0';
+        document.body.style.transition = 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)';
+        showNotification('Window hidden • Press Ctrl+H to restore');
+        hideBtn.classList.add('active');
+        hideBtn.innerHTML = '<span class="btn-icon">👁</span><span>Show</span>';
+      } else {
+        document.body.style.transform = '';
+        document.body.style.opacity = '';
+        showNotification('Window restored');
+        hideBtn.classList.remove('active');
+        hideBtn.innerHTML = '<span class="btn-icon">👁‍🗨</span><span>Hide</span>';
+      }
+    }
+
     // Anti-close toggle
     function toggleAntiClose() {
       antiCloseEnabled = !antiCloseEnabled;
       antiCloseBtn.classList.toggle('active', antiCloseEnabled);
       
       if (antiCloseEnabled) {
-        showNotification('Anti-close enabled');
+        showNotification('🔒 Anti-close enabled • Press Ctrl+Shift+L to disable');
       } else {
-        showNotification('Anti-close disabled');
+        showNotification('🔓 Anti-close disabled');
       }
+    }
+
+    // Settings dropdown (placeholder for future features)
+    function showSettings() {
+      showNotification('Settings panel coming soon...');
+      // Future: Add modal with options like:
+      // - Custom keybinds
+      // - Theme switcher
+      // - Performance settings
+      // - Auto-hide timer
     }
 
     // Prevent closing when anti-close is enabled
@@ -488,7 +538,7 @@
       loadingScreen.innerHTML = `
         <div class="error-screen">
           <h1 class="error-title">NO GAME SELECTED</h1>
-          <p class="error-message">You must choose a game from the library to play</p>
+          <p class="error-message">You must choose a game from the EYEDOPE 2 library to play</p>
           <button class="glass-btn" onclick="window.location.href='index.html'">
             <span class="btn-icon">←</span>
             <span>Return to Library</span>
@@ -503,8 +553,9 @@
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
       
-      gameTitle.textContent = formattedTitle;
-      document.title = `EYEDOPE • ${formattedTitle}`;
+      gameTitle.textContent = `EYEDOPE 2 • ${formattedTitle}`;
+      gameTitle.setAttribute('data-title', 'EYEDOPE 2');
+      document.title = `EYEDOPE 2 • ${formattedTitle}`;
       
       // Load the game
       const gamePath = `files/${gameFolder}/index.html`;
@@ -516,7 +567,7 @@
         loadingScreen.innerHTML = `
           <div class="error-screen">
             <h1 class="error-title">LOADING TIMEOUT</h1>
-            <p class="error-message">The game "${formattedTitle}" is taking too long to load</p>
+            <p class="error-message">"${formattedTitle}" is taking too long to load. Check your connection.</p>
             <button class="glass-btn" onclick="location.reload()">
               <span class="btn-icon">↻</span>
               <span>Retry</span>
@@ -527,22 +578,22 @@
             </button>
           </div>
         `;
-      }, 15000);
+      }, 20000); // Increased timeout
 
       gameFrame.addEventListener('load', () => {
         clearTimeout(loadTimeout);
         setTimeout(() => {
-          loadingScreen.style.transition = 'opacity 0.6s ease';
+          loadingScreen.style.transition = 'opacity 0.8s ease';
           loadingScreen.style.opacity = '0';
           setTimeout(() => {
             loadingScreen.style.display = 'none';
             navbar.classList.add('visible');
-            showNotification('Press ESC to toggle navbar • Hover to show');
+            showNotification('🎮 Ready • ESC: Navbar • F11: Fullscreen • Ctrl+H: Panic');
             setTimeout(() => {
               navbar.classList.remove('visible');
-            }, 3000);
-          }, 600);
-        }, 400);
+            }, 4000);
+          }, 800);
+        }, 600);
       });
       
       gameFrame.addEventListener('error', () => {
@@ -550,7 +601,7 @@
         loadingScreen.innerHTML = `
           <div class="error-screen">
             <h1 class="error-title">GAME NOT FOUND</h1>
-            <p class="error-message">The game "${formattedTitle}" could not be loaded.</p>
+            <p class="error-message">"${formattedTitle}" could not be loaded. It may have been removed.</p>
             <button class="glass-btn" onclick="window.location.href='index.html'">
               <span class="btn-icon">←</span>
               <span>Return to Library</span>
@@ -563,21 +614,24 @@
     // Button event listeners
     backBtn.addEventListener('click', () => {
       if (antiCloseEnabled) {
-        const leave = confirm('Anti-close is enabled btw. Are you sure you wanna return to library? Progress may be lost.');
+        const leave = confirm('🔒 Anti-close is enabled. Are you sure you want to leave? All progress will be lost.');
         if (!leave) return;
       } else {
-        const leave = confirm('Are you sure you wanna return to library? Progress may be lost.');
+        const leave = confirm('Return to library? Progress may be lost.');
         if (!leave) return;
       }
       window.location.href = 'index.html';
     });
 
     cloakBtn.addEventListener('click', cloakPage);
+    cloneBtn.addEventListener('click', cloneTab);
+    hideBtn.addEventListener('click', toggleHide);
     antiCloseBtn.addEventListener('click', toggleAntiClose);
+    settingsBtn.addEventListener('click', showSettings);
     
     reloadBtn.addEventListener('click', () => {
       gameFrame.src = gameFrame.src;
-      showNotification('Reloading game...');
+      showNotification('🔄 Reloading game...');
     });
 
     fullscreenBtn.addEventListener('click', () => {
@@ -598,7 +652,7 @@
         text.textContent = 'Exit FS';
         navbar.classList.remove('visible');
         gameContainer.classList.add('fullscreen');
-        showNotification('Fullscreen mode • Press ESC to exit');
+        showNotification('⛶ Fullscreen • Press F11 to exit');
       } else {
         text.textContent = 'Fullscreen';
         gameContainer.classList.remove('fullscreen');
@@ -609,8 +663,8 @@
 
     // Keyboard shortcuts
     document.addEventListener('keydown', (e) => {
-      // ESC - toggle navbar (if not in fullscreen)
-      if (e.key === 'Escape' && !document.fullscreenElement) {
+      // ESC - toggle navbar (if not in fullscreen and not hidden)
+      if (e.key === 'Escape' && !document.fullscreenElement && !isHidden) {
         navbar.classList.toggle('visible');
       }
       
@@ -637,24 +691,50 @@
         e.preventDefault();
         cloakBtn.click();
       }
+
+      // Ctrl/Cmd + D - clone
+      if ((e.ctrlKey || e.metaKey) && e.key === 'd') {
+        e.preventDefault();
+        cloneBtn.click();
+      }
+
+      // Ctrl/Cmd + H - hide/show
+      if ((e.ctrlKey || e.metaKey) && e.key === 'h') {
+        e.preventDefault();
+        hideBtn.click();
+      }
+
+      // Ctrl/Cmd + Shift + L - anti-close
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'L') {
+        e.preventDefault();
+        antiCloseBtn.click();
+      }
+
+      // Panic mode: Ctrl/Cmd + Shift + H (instant cloak + hide)
+      if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key === 'H') {
+        e.preventDefault();
+        showNotification('🚨 PANIC MODE ACTIVATED');
+        cloakPage();
+        setTimeout(toggleHide, 500);
+      }
     });
 
     // Mouse hover shows navbar
     let mouseTimeout;
     document.addEventListener('mousemove', (e) => {
-      if (document.fullscreenElement) return;
+      if (document.fullscreenElement || isHidden) return;
       
       // Show navbar when mouse is near top
-      if (e.clientY < 100) {
+      if (e.clientY < 120) {
         navbar.classList.add('visible');
       }
       
       clearTimeout(mouseTimeout);
       mouseTimeout = setTimeout(() => {
-        if (e.clientY > 50) {
+        if (e.clientY > 60) {
           navbar.classList.remove('visible');
         }
-      }, 2000);
+      }, 2500);
     });
 
     // If in about:blank cloak, update UI
@@ -662,20 +742,16 @@
       cloakBtn.disabled = true;
       cloakBtn.style.opacity = '0.5';
       cloakBtn.title = 'Already cloaked';
+      showNotification('Running in cloaked mode', 5000);
     }
+
+    // Prevent right-click context menu for additional stealth
+    document.addEventListener('contextmenu', (e) => {
+      if (isHidden) {
+        e.preventDefault();
+        return false;
+      }
+    });
   </script>
-  <script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1223804"></script>
-  <script>
-(function(kuxz){
-var d = document,
-    s = d.createElement('script'),
-    l = d.scripts[d.scripts.length - 1];
-s.settings = kuxz || {};
-s.src = "\/\/excitedzone.com\/b.XWVdsKdBGYlU0\/YWWycf\/QejmZ9ku_ZvUXlWkbPnTMYa3QN\/DwgY4nNsjzk\/tfNQjfc\/0QOyDFgr3sMdAy";
-s.async = true;
-s.referrerPolicy = 'no-referrer-when-downgrade';
-l.parentNode.insertBefore(s, l);
-})({})
-</script>
 </body>
 </html>

@@ -344,6 +344,11 @@
         <span>Clone</span>
       </button>
 
+      <button class="navbar-btn" id="hideBtn" title="Hide window (Ctrl+H)">
+        <span class="btn-icon">👁‍🗨</span>
+        <span>Hide</span>
+      </button>
+
       <button class="navbar-btn" id="antiCloseBtn" title="Prevent accidental closing (Ctrl+Shift+L)">
         <span class="btn-icon">🔒</span>
         <span>Anti-Close</span>
@@ -381,7 +386,7 @@
   <script>
     // Parse URL parameters
     const params = new URLSearchParams(window.location.search);
-    const gameFolder = params.get('game');
+    const gameParam = params.get('game');
 
     // DOM elements
     const loadingScreen = document.getElementById('loadingScreen');
@@ -528,8 +533,33 @@
       }
     });
 
+    // Determine if it's an external URL or local folder
+    const isExternalUrl = gameParam && (gameParam.startsWith('http://') || gameParam.startsWith('https://'));
+    const gameFolder = isExternalUrl ? null : gameParam;
+
+    // Extract game name for title
+    function getGameName() {
+      if (isExternalUrl) {
+        // Extract filename from URL (e.g., "624.html" -> "624")
+        const filename = gameParam.split('/').pop().replace('.html', '');
+        // Try to get name from URL path or use filename
+        const pathParts = gameParam.split('/');
+        const parentFolder = pathParts[pathParts.length - 2];
+        return parentFolder && !parentFolder.includes('@') ? parentFolder : `Game ${filename}`;
+      }
+      return gameFolder;
+    }
+
+    function formatTitle(name) {
+      return name
+        .replace(/[-_]/g, ' ')
+        .split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
+    }
+
     // Handle no game selected
-    if (!gameFolder) {
+    if (!gameParam) {
       loadingScreen.innerHTML = `
         <div class="error-screen">
           <h1 class="error-title">NO GAME SELECTED</h1>
@@ -542,19 +572,20 @@
       `;
     } else {
       // Format game title
-      const formattedTitle = gameFolder
-        .replace(/[-_]/g, ' ')
-        .split(' ')
-        .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
+      const gameName = getGameName();
+      const formattedTitle = formatTitle(gameName);
       
       gameTitle.textContent = `EYEDOPE 2 • ${formattedTitle}`;
       gameTitle.setAttribute('data-title', 'EYEDOPE 2');
       document.title = `EYEDOPE 2 • ${formattedTitle}`;
       
       // Load the game
-      const gamePath = `files/${gameFolder}/index.html`;
-      gameFrame.src = gamePath;
+      if (isExternalUrl) {
+        gameFrame.src = gameParam;
+      } else if (gameFolder) {
+        const gamePath = `files/${gameFolder}/index.html`;
+        gameFrame.src = gamePath;
+      }
       
       // Hide loading screen when game loads
       let loadTimeout = setTimeout(() => {

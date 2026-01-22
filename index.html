@@ -84,7 +84,7 @@
       transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
     }
 
-    /* Animated background grid - FIXED */
+    /* Fixed animated background grid */
     body::before {
       content: '';
       position: fixed;
@@ -159,20 +159,20 @@
       50% { transform: translateY(-100%); opacity: 0.3; }
     }
 
-    /* ASCII Animation Container - FIXED POSITIONING */
+    /* Fixed ASCII Animation Container */
     .ascii-container {
       position: relative;
-      height: 80px; /* Reduced height for better centering */
+      height: 80px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 1rem 0; /* Adjusted margins */
+      margin: 1rem 0;
       overflow: hidden;
     }
 
     .ascii-art {
       font-family: 'Courier New', monospace;
-      font-size: 12px; /* Slightly smaller for better fit */
+      font-size: 12px;
       line-height: 1.2;
       white-space: pre;
       text-align: center;
@@ -204,7 +204,7 @@
     /* Header with intense glitch effect */
     header {
       text-align: center;
-      margin-bottom: 2rem; /* Reduced margin */
+      margin-bottom: 2rem;
       position: relative;
     }
 
@@ -817,7 +817,7 @@
       }
 
       .ascii-container {
-        height: 60px; /* Reduced for mobile */
+        height: 60px;
       }
 
       .bookmark-button {
@@ -1303,16 +1303,25 @@
     // External Game Source Integration
     async function fetchExternalGames() {
       try {
-
+        // Fetch the zones.json from gn-math
         const response = await fetch('https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json');
         if (!response.ok) throw new Error('Failed to fetch zones.json');
         
         const zonesData = await response.json();
         
+        // Filter out "comments" and ".gg/xxxxxx" entries
+        const filteredData = zonesData.filter(game => 
+          !game.name.toLowerCase().includes('comments') && 
+          !game.name.toLowerCase().includes('.gg/') &&
+          !game.name.toLowerCase().includes('suggest games') &&
+          !game.url.includes('discord.gg')
+        );
+        
         // Transform the data to match our format
-        const externalGames = zonesData.map(game => ({
+        const externalGames = filteredData.map(game => ({
           folder: game.id.toString(),
           title: game.name,
+          author: game.author,
           isExternal: true,
           coverUrl: game.cover.replace('{COVER_URL}', 'https://cdn.jsdelivr.net/gh/gn-math/covers@main'),
           gameUrl: game.url.replace('{HTML_URL}', 'https://cdn.jsdelivr.net/gh/gn-math/html@main')
@@ -1616,4 +1625,5 @@
       e.preventDefault();
     });
   </script>
-<script data-cfasync="false" src="//dcbbwymp1bhlf.cloudfront.net/?wbbcd=1223804"></script>
+</body>
+</html>

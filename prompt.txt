@@ -1,0 +1,40 @@
+Include https://cdn.jsdelivr.net/gh/gn-math/assets/zones.json zones from an exrernal third party game source
+'gn-math' with the zones.json organizing the games themeselves, for example:
+
+{
+    "id": 624,
+    "name": "Happy Wheels",
+    "cover": "{COVER_URL}/624.png",
+    "url": "{HTML_URL}/624.html",
+    "author": "Jim Bonacci",
+    "authorLink": "https://totaljerkface.com/"
+  },
+  {
+    "id": 625,
+    "name": "Get Yoked",
+    "cover": "{COVER_URL}/625.png",
+    "url": "{HTML_URL}/625.html",
+    "author": "gregs games",
+    "authorLink": "https://gregs-games.itch.io/get-yoked-2"
+  },
+  {
+    "id": 626,
+    "name": "Doom 3",
+    "cover": "{COVER_URL}/626.png",
+    "url": "{HTML_URL}/626-f.html",
+    "author": "id Software, 98corbins",
+    "authorLink": "https://www.idsoftware.com",
+    "special": [
+      "port"
+    ]
+  },
+
+  including finding the HTML_URL for the source of the site being https://cdn.jsdelivr.net/gh/gn-math/html@main/501.HTML_URL
+  for example, when visiting that url with the code in the url slug it will visit the id combined with the
+  zones.json source id's for the html url. 
+
+  Include these games from this source to autopopulate on my website from my index.html, including the games from the files.
+
+  also fix ascii title positioning to make it closer to the center, fix the background animation, and etc.
+
+  

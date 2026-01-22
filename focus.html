@@ -387,6 +387,7 @@
     // Parse URL parameters
     const params = new URLSearchParams(window.location.search);
     const gameParam = params.get('game');
+    const isExternal = params.get('external') === 'true';
 
     // DOM elements
     const loadingScreen = document.getElementById('loadingScreen');
@@ -533,29 +534,24 @@
       }
     });
 
-    // Determine if it's an external URL or local folder
-    const isExternalUrl = gameParam && (gameParam.startsWith('http://') || gameParam.startsWith('https://'));
-    const gameFolder = isExternalUrl ? null : gameParam;
-
     // Extract game name for title
-    function getGameName() {
-      if (isExternalUrl) {
-        // Extract filename from URL (e.g., "624.html" -> "624")
-        const filename = gameParam.split('/').pop().replace('.html', '');
-        // Try to get name from URL path or use filename
-        const pathParts = gameParam.split('/');
-        const parentFolder = pathParts[pathParts.length - 2];
-        return parentFolder && !parentFolder.includes('@') ? parentFolder : `Game ${filename}`;
-      }
-      return gameFolder;
-    }
-
     function formatTitle(name) {
       return name
         .replace(/[-_]/g, ' ')
         .split(' ')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
+    }
+
+    function getGameName() {
+      if (isExternal) {
+        // Extract game ID from URL for external games
+        const urlParts = gameParam.split('/');
+        const filename = urlParts[urlParts.length - 1]; // e.g., "624.html"
+        const gameId = filename.replace('.html', '');
+        return `Game ${gameId}`;
+      }
+      return gameParam; // Local game folder name
     }
 
     // Handle no game selected
@@ -580,11 +576,15 @@
       document.title = `EYEDOPE 2 • ${formattedTitle}`;
       
       // Load the game
-      if (isExternalUrl) {
+      if (isExternal) {
+        // EXTERNAL: Load directly in iframe (bypasses CDN block)
         gameFrame.src = gameParam;
-      } else if (gameFolder) {
-        const gamePath = `files/${gameFolder}/index.html`;
+        console.log(`Loading external game: ${gameParam}`);
+      } else {
+        // LOCAL: Load from files directory
+        const gamePath = `files/${gameParam}/index.html`;
         gameFrame.src = gamePath;
+        console.log(`Loading local game: ${gamePath}`);
       }
       
       // Hide loading screen when game loads

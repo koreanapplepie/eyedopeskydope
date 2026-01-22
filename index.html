@@ -1300,7 +1300,7 @@
       }
     }
 
-    // External Game Source Integration
+    // External Game Source Integration - MODIFIED FOR IFRAME EMBED
     async function fetchExternalGames() {
       try {
         // Fetch the zones.json from gn-math
@@ -1358,7 +1358,7 @@
         console.log('No local games.json found, using external games only');
       }
 
-      
+      // Fallback: manual game list
       if (allDiscoveredGames.length === 0) {
         const knownGames = [
           '(+) EyeDope A.I.', 'slowroads', 'endoparasitic', 'kindergarten', 'kindergarten 2',
@@ -1410,7 +1410,7 @@
         .join(' ');
     }
 
-    // Create game card element - UPDATED for external games
+    // Create game card element - UPDATED FOR UNIFIED LOADING
     function createGameCard(game) {
       const card = document.createElement('div');
       card.className = 'game-card';
@@ -1442,18 +1442,16 @@
         </div>
       `;
 
-      // Use different open method for external games
-      if (game.isExternal) {
-        card.addEventListener('click', () => openExternalGame(game.gameUrl));
-      } else {
-        card.addEventListener('click', () => openGame(game.folder));
-      }
+      // UNIFIED: Both external and local games use focus.html
+      const gameUrl = game.isExternal ? game.gameUrl : game.folder;
+      card.addEventListener('click', () => openGame(gameUrl, game.isExternal));
       
       return card;
     }
 
-    // Open external game in cloaked window
-    function openExternalGame(gameUrl) {
+    // UNIFIED: Open any game (local or external) in focus.html with navbar
+    function openGame(gameUrl, isExternal = false) {
+      const focusUrl = `focus.html?game=${encodeURIComponent(gameUrl)}&external=${isExternal}`;
       const win = window.open('about:blank', '_blank');
       
       if (!win) {
@@ -1474,39 +1472,7 @@
           </style>
         </head>
         <body>
-          <iframe src="${gameUrl}" allowfullscreen></iframe>
-        </body>
-        </html>
-      `);
-      doc.close();
-
-      win.onbeforeunload = () => "Leave EYEDOPE? Your progress may be lost.";
-    }
-
-    // Open local game in cloaked window
-    function openGame(gameFolder) {
-      const gameURL = `focus.html?game=${encodeURIComponent(gameFolder)}`;
-      const win = window.open('about:blank', '_blank');
-      
-      if (!win) {
-        alert('⚠️ Pop-up blocked! Please allow popups for about:blank game cloak functionality and to open the game!');
-        return;
-      }
-
-      const doc = win.document;
-      doc.open();
-      doc.write(`
-        <!DOCTYPE html>
-        <html>
-        <head>
-          <title>Loading...</title>
-          <style>
-            body { margin: 0; overflow: hidden; background: #000; }
-            iframe { border: none; width: 100vw; height: 100vh; }
-          </style>
-        </head>
-        <body>
-          <iframe src="${gameURL}" allowfullscreen></iframe>
+          <iframe src="${focusUrl}" allowfullscreen></iframe>
         </body>
         </html>
       `);

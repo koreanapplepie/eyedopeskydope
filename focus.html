@@ -35,7 +35,7 @@
       position: relative;
     }
 
-    /* Enhanced navbar with animated background */
+    /* PERMANENTLY VISIBLE NAVBAR - Removed hide animations */
     .navbar {
       position: fixed;
       top: 0;
@@ -50,17 +50,11 @@
       background: linear-gradient(180deg, rgba(0, 0, 0, 0.95) 0%, rgba(20, 0, 10, 0.85) 100%);
       backdrop-filter: blur(15px) saturate(180%);
       border-bottom: 2px solid var(--glass-border);
-      opacity: 0;
-      transform: translateY(-100%);
+      opacity: 1; /* Always visible */
+      transform: translateY(0); /* Always visible */
       transition: all var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1);
-      pointer-events: none;
-      box-shadow: 0 5px 30px rgba(255, 0, 51, 0.3);
-    }
-
-    .navbar.visible {
-      opacity: 1;
-      transform: translateY(0);
       pointer-events: all;
+      box-shadow: 0 5px 30px rgba(255, 0, 51, 0.3);
     }
 
     .navbar-section {
@@ -192,7 +186,7 @@
     /* Game container */
     .game-container {
       position: absolute;
-      top: var(--navbar-height);
+      top: var(--navbar-height); /* Always below navbar */
       left: 0;
       width: 100%;
       height: calc(100vh - var(--navbar-height));
@@ -326,7 +320,7 @@
     <div class="loading-spinner"></div>
   </div>
 
-  <!-- Enhanced navbar -->
+  <!-- PERMANENTLY VISIBLE NAVBAR -->
   <nav class="navbar" id="navbar">
     <div class="navbar-section">
       <button class="navbar-btn" id="backBtn" title="Return to library (Ctrl+B)">
@@ -547,11 +541,11 @@
       if (isExternal) {
         // Extract game ID from URL for external games
         const urlParts = gameParam.split('/');
-        const filename = urlParts[urlParts.length - 1]; // e.g., "624.html"
+        const filename = urlParts[urlParts.length - 1];
         const gameId = filename.replace('.html', '');
         return `Game ${gameId}`;
       }
-      return gameParam; // Local game folder name
+      return gameParam;
     }
 
     // Handle no game selected
@@ -613,11 +607,8 @@
           loadingScreen.style.opacity = '0';
           setTimeout(() => {
             loadingScreen.style.display = 'none';
-            navbar.classList.add('visible');
+            // Navbar always visible - removed auto-hide
             showNotification('🎮 Ready • ESC: Navbar • F11: Fullscreen • Ctrl+H: Panic');
-            setTimeout(() => {
-              navbar.classList.remove('visible');
-            }, 4000);
           }, 800);
         }, 600);
       });
@@ -676,14 +667,15 @@
       
       if (document.fullscreenElement) {
         text.textContent = 'Exit FS';
+        // Navbar hidden only in fullscreen
         navbar.classList.remove('visible');
         gameContainer.classList.add('fullscreen');
         showNotification('⛶ Fullscreen • Press F11 to exit');
       } else {
         text.textContent = 'Fullscreen';
         gameContainer.classList.remove('fullscreen');
+        // Navbar visible when not fullscreen
         navbar.classList.add('visible');
-        setTimeout(() => navbar.classList.remove('visible'), 3000);
       }
     });
 
@@ -691,7 +683,8 @@
     document.addEventListener('keydown', (e) => {
       // ESC - toggle navbar (if not in fullscreen and not hidden)
       if (e.key === 'Escape' && !document.fullscreenElement && !isHidden) {
-        navbar.classList.toggle('visible');
+        // Keep navbar always visible - do not toggle
+        navbar.classList.add('visible');
       }
       
       // F11 - fullscreen
@@ -745,22 +738,13 @@
       }
     });
 
-    // Mouse hover shows navbar
-    let mouseTimeout;
+    // DISABLED mouse auto-hide for navbar
+    // Navbar remains visible at all times unless in fullscreen
     document.addEventListener('mousemove', (e) => {
       if (document.fullscreenElement || isHidden) return;
       
-      // Show navbar when mouse is near top
-      if (e.clientY < 120) {
-        navbar.classList.add('visible');
-      }
-      
-      clearTimeout(mouseTimeout);
-      mouseTimeout = setTimeout(() => {
-        if (e.clientY > 60) {
-          navbar.classList.remove('visible');
-        }
-      }, 2500);
+      // Keep navbar visible - no auto-hide
+      navbar.classList.add('visible');
     });
 
     // If in about:blank cloak, update UI
@@ -777,6 +761,11 @@
         e.preventDefault();
         return false;
       }
+    });
+
+    // Ensure navbar is visible on load
+    window.addEventListener('load', () => {
+      navbar.classList.add('visible');
     });
   </script>
 </body>
